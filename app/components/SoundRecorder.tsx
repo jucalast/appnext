@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-import styles from "../page.module.css";
+import styles from "./SoundRecorder.module.css";
 
 const SoundRecorder = () => {
   const [recording, setRecording] = useState(false);
@@ -78,8 +78,7 @@ const SoundRecorder = () => {
   };
 
   return (
-    <div className={styles.container}>
-      <h1 className={styles.title}>Gravador de Som</h1>
+    <div className={styles.soundContainer}>
       <canvas className={styles.canvas} ref={canvasRef} width="600" height="200"></canvas>
       <button className={styles.button} onClick={() => setRecording(!recording)}>
         {recording ? "Parar Gravação" : "Iniciar Gravação"}

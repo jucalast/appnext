@@ -1,16 +1,16 @@
-import { Poppins } from "next/font/google";
 import styles from "./page.module.css";
-import SoundRecorder from "./components/SoundRecorder"; // Verifique se o componente está sendo exportado corretamente
-
-const poppins = Poppins({
-  weight: "700",
-  subsets: ["latin"],
-});
+import ChatContainer from "./components/ChatContainer";
+import Title from "./components/Title";
 
 export default function HomePage() {
+  const handleFirstMessageSent = () => {
+    // Função de callback para quando a primeira mensagem for enviada
+  };
+
   return (
-    <div className={`${styles.container} ${poppins.className}`}>
-      <SoundRecorder />
+    <div className={styles.homeContainer}>
+      <Title />
+      <ChatContainer />
     </div>
   );
 }

@@ -3,7 +3,6 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100vh;
   background: #1a1a1a; /* Fundo escuro */
   background-size: cover;
   text-align: center;
@@ -11,35 +10,18 @@
   padding: 0; /* Remover preenchimento */
 }
 
-.container h1 {
-  font-size: 4rem; /* Texto maior */
-  color: #f0f0f0; /* Texto claro para contraste */
+.homeContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  text-align: center; /* Centralizar o texto */
+  width: 100%; /* Garantir que a largura seja 100% */
 }
 
 .title {
   font-size: 2rem;
   color: #f0f0f0;
   margin-bottom: 20px;
-}
-
-.button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 1rem;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.button:hover {
-  background-color: #0056b3;
-}
-
-.canvas {
-  margin-top: 20px;
-  background: transparent;
-  border: none;
-  /* Remover sombra ao redor da onda sonora */
 }
