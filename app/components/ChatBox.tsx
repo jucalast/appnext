@@ -5,7 +5,7 @@ import styles from "./ChatBox.module.css";
 import Modal from "./Modal";
 import SoundRecorder from "./SoundRecorder";
 import { FaMicrophone, FaArrowUp } from "react-icons/fa";
-import { GoogleGenerativeAI } from "@google/generative-ai";
+import { generateContent } from "../utils/api";
 
 interface ChatBoxProps {
   onNewMessage: (message: string, sender: "user" | "gemini") => void;
@@ -16,7 +16,7 @@ const ChatBox: React.FC<ChatBoxProps> = ({ onNewMessage }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    console.log("GEMINI_API_KEY:", process.env.GEMINI_API_KEY);
+    console.log("NEXT_PUBLIC_GEMINI_API_KEY:", process.env.NEXT_PUBLIC_GEMINI_API_KEY);
     console.log("NEXT_PUBLIC_API_URL:", process.env.NEXT_PUBLIC_API_URL);
   }, []);
 
@@ -26,23 +26,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ onNewMessage }) => {
       onNewMessage(userMessage, "user");
       setInput("");
 
-      try {
-        const apiKey = process.env.GEMINI_API_KEY;
-        if (!apiKey) {
-          throw new Error("GEMINI_API_KEY não está definida");
-        }
-
-        const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-        const result = await model.generateContent(userMessage);
-        const aiMessage = result.response.text();
-
-        onNewMessage(aiMessage, "gemini");
-      } catch (error) {
-        console.error("Erro ao enviar mensagem:", error);
-        onNewMessage("Erro ao enviar mensagem. Tente novamente.", "gemini");
-      }
     }
   };
 

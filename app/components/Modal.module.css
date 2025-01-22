@@ -31,3 +31,10 @@
   font-size: 1.5rem;
   cursor: pointer;
 }
+
+@media (max-width: 768px) {
+  .modalContent {
+    max-width: 90%;
+    height: auto;
+  }
+}

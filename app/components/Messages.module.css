@@ -1,5 +1,14 @@
+.messagesContainer {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  overflow-y: auto;
+  height: 100%;
+  padding: 10px;
+}
+
 .messages {
-  width: 60%;
+  width: 100%;
   max-height: 700px;
   overflow-y: auto;
   margin-bottom: 10px;
@@ -7,6 +16,8 @@
   flex-direction: column;
   align-items: center; /* Centralizar mensagens */
   padding: 2rem;
+  padding-left:20rem;
+  padding-right: 20rem;
 }
 
 /* Estilizar a barra de rolagem */
@@ -40,10 +51,25 @@
 
 .message.user {
   align-self: flex-end; /* Alinhar à direita */
-  background-color: #272727; /* Cor diferente para a mensagem do usuário */
+  background-color: #383838; /* Cor diferente para a mensagem do usuário */
 }
 
 .message.gemini {
   align-self: flex-start; /* Alinhar à esquerda */
   background-color: transparent; /* Cor diferente para a mensagem do Gemini */
+  text-align: left; /* Alinhar o texto à esquerda */
+}
+
+.message.streaming {
+  transition: all 0.3s ease-in-out; /* Adicionar transição suave */
+}
+
+@media (max-width: 768px) {
+  .messages {
+    width: 90%;
+  }
+
+  .message {
+    max-width: 80%;
+  }
 }

@@ -17,3 +17,9 @@
 .chatContainer.messagesView .chatBox {
   margin-top: auto; /* Mover o ChatBox para baixo */
 }
+
+@media (max-width: 768px) {
+  .chatContainer {
+    padding: 1rem;
+  }
+}

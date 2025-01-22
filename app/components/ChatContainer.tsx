@@ -22,7 +22,7 @@ const ChatContainer: React.FC<ChatContainerProps> = () => {
 
   return (
     <div className={`${styles.chatContainer} ${isFirstMessageSent ? styles.messagesView : ""}`}>
-      <Messages messages={messages} />
+      <Messages messages={messages} onNewMessage={handleNewMessage} />
       <ChatBox onNewMessage={handleNewMessage} />
     </div>
   );
