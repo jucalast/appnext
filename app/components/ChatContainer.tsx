@@ -6,10 +6,10 @@ import Messages from "./Messages";
 import styles from "./ChatContainer.module.css";
 
 interface ChatContainerProps {
-  // Remova a prop onFirstMessageSent
+  chatId: string;
 }
 
-const ChatContainer: React.FC<ChatContainerProps> = () => {
+const ChatContainer: React.FC<ChatContainerProps> = ({ chatId }) => {
   const [messages, setMessages] = useState<{ text: string; sender: "user" | "gemini" }[]>([]);
   const [isFirstMessageSent, setIsFirstMessageSent] = useState(false);
 
@@ -22,8 +22,8 @@ const ChatContainer: React.FC<ChatContainerProps> = () => {
 
   return (
     <div className={`${styles.chatContainer} ${isFirstMessageSent ? styles.messagesView : ""}`}>
-      <Messages messages={messages} onNewMessage={handleNewMessage} />
-      <ChatBox onNewMessage={handleNewMessage} />
+      <Messages messages={messages} onNewMessage={handleNewMessage} chatId={chatId} />
+      <ChatBox onNewMessage={handleNewMessage} chatId={chatId} />
     </div>
   );
 };

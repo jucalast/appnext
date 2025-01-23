@@ -8,10 +8,10 @@ import { FaMicrophone, FaArrowUp } from "react-icons/fa";
 
 interface ChatBoxProps {
   onNewMessage: (message: string, sender: "user" | "gemini") => void;
-  userId: string;
+  chatId: string;
 }
 
-const ChatBox: React.FC<ChatBoxProps> = ({ onNewMessage, userId }) => {
+const ChatBox: React.FC<ChatBoxProps> = ({ onNewMessage, chatId }) => {
   const [input, setInput] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 

@@ -7,7 +7,7 @@ import { sendMessageStream, addMessageToHistory } from "../utils/api";
 interface MessagesProps {
   messages: { text: string; sender: "user" | "gemini" }[];
   onNewMessage: (message: string, sender: "user" | "gemini") => void;
-  userId: string;
+  chatId: string;
 }
 
 const formatMessage = (text: string) => {
@@ -25,7 +25,7 @@ const formatMessage = (text: string) => {
   return { __html: formattedText };
 };
 
-const Messages: React.FC<MessagesProps> = ({ messages, onNewMessage, userId }) => {
+const Messages: React.FC<MessagesProps> = ({ messages, onNewMessage, chatId }) => {
   const [streamingMessage, setStreamingMessage] = useState("");
 
   useEffect(() => {
@@ -34,7 +34,7 @@ const Messages: React.FC<MessagesProps> = ({ messages, onNewMessage, userId }) =
       const userMessage = messages[messages.length - 1].text;
       addMessageToHistory("user", userMessage); // Adicionar mensagem do usuário ao histórico
       let completeMessage = "";
-      sendMessageStream(userMessage, userId, (chunkText) => {
+      sendMessageStream(userMessage, chatId, (chunkText) => {
         completeMessage += chunkText;
         setStreamingMessage(completeMessage);
       }).then(() => {
@@ -48,7 +48,7 @@ const Messages: React.FC<MessagesProps> = ({ messages, onNewMessage, userId }) =
         onNewMessage("Erro ao buscar mensagem de streaming. Tente novamente.", "gemini");
       });
     }
-  }, [messages, onNewMessage, userId]);
+  }, [messages, onNewMessage, chatId]);
 
   return (
     <div className={styles.messagesContainer}>

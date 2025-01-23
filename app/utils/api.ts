@@ -1,4 +1,5 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
+import { saveMessage } from "./database";
 
 const apiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 if (!apiKey) {
@@ -21,39 +22,20 @@ const updateChat = () => {
 
 let chat = updateChat();
 
-export const sendMessage = async (message: string, userId: string) => {
+export const sendMessage = async (message: string, chatId: string) => {
   const result = await chat.sendMessage(message);
   const responseText = result.response.text();
 
-  // Salvar mensagem do usuário e resposta do modelo no banco de dados via API
-  await fetch("/api/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      message,
-      userId,
-      role: "user",
-    }),
-  });
+  console.log("Enviando mensagem do usuário:", { message, chatId, role: "user" });
 
-  await fetch("/api/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      message: responseText,
-      userId,
-      role: "model",
-    }),
-  });
+  await saveMessage(message, chatId, "user");
+  console.log("Enviando mensagem do modelo:", { message: responseText, chatId, role: "model" });
+  await saveMessage(responseText, chatId, "model");
 
   return responseText;
 };
 
-export const sendMessageStream = async (message: string, userId: string, onChunk: (chunkText: string) => void) => {
+export const sendMessageStream = async (message: string, chatId: string, onChunk: (chunkText: string) => void) => {
   const result = await chat.sendMessageStream(message);
 
   let completeMessage = "";
@@ -63,30 +45,11 @@ export const sendMessageStream = async (message: string, userId: string, onChunk
     onChunk(chunkText);
   }
 
-  // Salvar mensagem do usuário e resposta do modelo no banco de dados via API
-  await fetch("/api/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      message,
-      userId,
-      role: "user",
-    }),
-  });
+  console.log("Enviando mensagem do usuário (stream):", { message, chatId, role: "user" });
 
-  await fetch("/api/messages", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
-      message: completeMessage,
-      userId,
-      role: "model",
-    }),
-  });
+  await saveMessage(message, chatId, "user");
+  console.log("Enviando mensagem do modelo (stream):", { message: completeMessage, chatId, role: "model" });
+  await saveMessage(completeMessage, chatId, "model");
 };
 
 export const addMessageToHistory = (role: "user" | "model", text: string) => {
