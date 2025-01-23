@@ -18,7 +18,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="pt">
+      <head>
+        {/* ...existing code... */}
+      </head>
       <body className={poppins.className}>
         {children}
       </body>

@@ -22,7 +22,7 @@ const Title: React.FC<TitleProps> = () => {
 
   if (!isVisible) return null;
 
-  return <h1 className={`${poppins.className}`}>Como posso ajudar?</h1>;
+  return <h1 className={`${poppins.className}`}>Chat'me</h1>;
 };
 
 export default Title;

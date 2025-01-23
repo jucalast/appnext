@@ -5,13 +5,13 @@ import styles from "./ChatBox.module.css";
 import Modal from "./Modal";
 import SoundRecorder from "./SoundRecorder";
 import { FaMicrophone, FaArrowUp } from "react-icons/fa";
-import { generateContent } from "../utils/api";
 
 interface ChatBoxProps {
   onNewMessage: (message: string, sender: "user" | "gemini") => void;
+  userId: string;
 }
 
-const ChatBox: React.FC<ChatBoxProps> = ({ onNewMessage }) => {
+const ChatBox: React.FC<ChatBoxProps> = ({ onNewMessage, userId }) => {
   const [input, setInput] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -25,7 +25,6 @@ const ChatBox: React.FC<ChatBoxProps> = ({ onNewMessage }) => {
       const userMessage = input;
       onNewMessage(userMessage, "user");
       setInput("");
-
     }
   };
 

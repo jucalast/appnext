@@ -2,7 +2,7 @@ module.exports = {
   // ...existing code...
   env: {
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
-    GEMINI_API_KEY: process.env.GEMINI_API_KEY,
+    NEXT_PUBLIC_GEMINI_API_KEY: process.env.NEXT_PUBLIC_GEMINI_API_KEY,
   },
   async rewrites() {
     return [
@@ -15,4 +15,4 @@ module.exports = {
 };
 
 console.log("NEXT_PUBLIC_API_URL:", process.env.NEXT_PUBLIC_API_URL);
-console.log("GEMINI_API_KEY:", process.env.GEMINI_API_KEY);
+console.log("GEMINI_API_KEY:", process.env.NEXT_PUBLIC_GEMINI_API_KEY);

@@ -27,7 +27,7 @@
 }
 
 .sidebar.open {
-  width: 30vw;
+  width: 20vw;
 }
 
 .homeContainer {
@@ -42,7 +42,7 @@
 }
 
 .homeContainer.shrink {
-  width: 70vw;
+  width: 80vw;
 }
 
 .title {

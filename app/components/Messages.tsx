@@ -2,11 +2,12 @@
 
 import React, { useState, useEffect } from "react";
 import styles from "./Messages.module.css";
-import { generateContent, generateContentStream } from "../utils/api";
+import { sendMessageStream, addMessageToHistory } from "../utils/api";
 
 interface MessagesProps {
   messages: { text: string; sender: "user" | "gemini" }[];
   onNewMessage: (message: string, sender: "user" | "gemini") => void;
+  userId: string;
 }
 
 const formatMessage = (text: string) => {
@@ -24,19 +25,22 @@ const formatMessage = (text: string) => {
   return { __html: formattedText };
 };
 
-const Messages: React.FC<MessagesProps> = ({ messages, onNewMessage }) => {
+const Messages: React.FC<MessagesProps> = ({ messages, onNewMessage, userId }) => {
   const [streamingMessage, setStreamingMessage] = useState("");
 
   useEffect(() => {
     if (messages.length > 0 && messages[messages.length - 1].sender === "user") {
       setStreamingMessage(""); // Resetar a mensagem de streaming antes de iniciar uma nova
       const userMessage = messages[messages.length - 1].text;
+      addMessageToHistory("user", userMessage); // Adicionar mensagem do usuário ao histórico
       let completeMessage = "";
-      generateContentStream(userMessage, (chunkText) => {
+      sendMessageStream(userMessage, userId, (chunkText) => {
         completeMessage += chunkText;
         setStreamingMessage(completeMessage);
       }).then(() => {
         if (completeMessage) {
+          setStreamingMessage(""); // Limpar a mensagem de streaming após completar
+          addMessageToHistory("model", completeMessage); // Adicionar resposta do modelo ao histórico
           onNewMessage(completeMessage, "gemini"); // Enviar a mensagem completa uma vez
         }
       }).catch((error) => {
@@ -44,7 +48,7 @@ const Messages: React.FC<MessagesProps> = ({ messages, onNewMessage }) => {
         onNewMessage("Erro ao buscar mensagem de streaming. Tente novamente.", "gemini");
       });
     }
-  }, [messages, onNewMessage]);
+  }, [messages, onNewMessage, userId]);
 
   return (
     <div className={styles.messagesContainer}>

@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String        @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  email       String        @unique
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  financial   FinancialInfo?
+  health      HealthInfo?
+  relationships RelationshipInfo?
+  habits      HabitInfo[]
+  generalGoals GeneralGoal[]
+  chats       Chat[]        // Relacionamento com as conversas
+}
+
+model FinancialInfo {
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId          String   @unique @db.ObjectId
+  income          Float    // Renda mensal
+  fixedExpenses   Float    // Despesas fixas
+  investments     Float    // Valor total em investimentos
+  debts           Float    // Dívidas totais
+  financialGoals  Json     // Metas financeiras detalhadas
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  user            User     @relation(fields: [userId], references: [id])
+}
+
+model HealthInfo {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId           String   @unique @db.ObjectId
+  weight           Float    // Peso atual
+  physicalLimits   String?  // Limitações físicas
+  fitnessGoals     Json     // Metas fitness (ex.: correr 5 km)
+  dietRoutine      String?  // Rotina alimentar resumida
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user             User     @relation(fields: [userId], references: [id])
+}
+
+model RelationshipInfo {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId           String   @unique @db.ObjectId
+  familyStatus     String?  // Estado dos relacionamentos familiares
+  friendStatus     String?  // Estado dos relacionamentos de amizade
+  romanticStatus   String?  // Estado do relacionamento amoroso
+  improvementGoals Json     // Metas de melhora nas interações
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user             User     @relation(fields: [userId], references: [id])
+}
+
+model HabitInfo {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId           String   @db.ObjectId
+  habitName        String   // Nome do hábito
+  isProductive     Boolean  // Hábito produtivo ou improdutivo
+  frequency        String   // Frequência (ex.: diária, semanal)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user             User     @relation(fields: [userId], references: [id])
+}
+
+model GeneralGoal {
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId           String   @db.ObjectId
+  description      String   // Descrição da meta
+  category         String   // Categoria (ex.: carreira, aprendizado)
+  deadline         DateTime // Prazo final para a meta
+  progress         Float    // Progresso da meta (%)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  user             User     @relation(fields: [userId], references: [id])
+}
+
+model Chat {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String     @db.ObjectId                      // ID do usuário associado
+  messages    Message[]                                  // Relacionamento com mensagens do chat
+  createdAt   DateTime   @default(now())                 // Data de criação do chat
+  updatedAt   DateTime   @updatedAt                      // Última atualização do chat
+
+  user        User       @relation(fields: [userId], references: [id]) // Relacionamento com usuário
+}
+
+model Message {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  chatId    String   @db.ObjectId                                 // ID do chat relacionado
+  role      String                                               // Papel (user ou model)
+  parts     Json                                                 // Partes da mensagem (formato da Google Generative AI)
+  createdAt DateTime @default(now())                             // Data de criação da mensagem
+
+  chat      Chat     @relation(fields: [chatId], references: [id]) // Relacionamento com o chat
+}
